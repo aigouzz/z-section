@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟滚动</title>
+    <style>
+        .viewport{
+            overflow-y: scroll;
+            position: relative;
+        }
+        .list{
+            position: absolute;
+            left: 0;
+            top: 0;
+            
+        }
+        .row{
+            height:  20px
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="viewport" ref="viewport" style="height: 400px" @scroll="onScroll">
+            <div class="scrollbar" ref="scrollbar" style="height: 4000px"></div>
+            <div class="list" ref="list">
+                <div class="row" v-for="(item, index) in showList">
+                    {{item}}
+                </div>
+            </div>
+        </div>
+        <!-- <div v-for="(item, index) in showList">
+            {{index}}
+        </div> -->
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    
+    new Vue({
+        el:'#app',
+        methods: {
+            getList() {
+                return new Array(1000).fill(null).map((e, i) => ++i);
+            },
+            onScroll() {
+                console.log('scroll')
+                let scrollTop = this.$refs.viewport.scrollTop;
+                this.start = Math.round(scrollTop/this.size);
+                this.end = this.start + this.size;
+                this.$refs.list.style.transform = 'translateY(' + scrollTop + 'px)';
+            },
+        },
+        computed: {
+            showList() {
+                return this.list.slice(this.start, this.end);
+            }
+        },
+        created() {
+            this.list = this.getList();
+        },
+        mounted() {
+            this.$refs.viewport.style.height = this.size * this.remain + 'px';
+            this.$refs.list.style.height = this.size * this.remain + 'px';
+            this.$refs.scrollbar.style.height = this.list.length * this.size + 'px';
+        },
+        data() {
+            return {
+                start: 1,
+                end: 20,
+                remain: 20, //可是区域显示多少
+                size: 20, //灵活的元素高度
+                list: []
+            };
+        },
+    });
+</script>
+</html>
