@@ -1,8 +1,8 @@
 //最好的方式使用weakMap 强弱引用的问题
-let cachedmap = new Map();
+let cachedmap = new weakMap();
 
 function deepclone(obj) {
-    if(typeof obj !== 'object' || !obj) {
+    if(typeof obj !== 'object' || typeof obj !== 'function' || !obj) {
         return obj;
     }
     if(cachedmap.has(obj)) {

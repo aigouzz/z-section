@@ -71,7 +71,40 @@
  *      "babel-loader"
  * ]
  * 
+ */
+/**
+ * 性能优化
+ * 1:浏览器请求方向
+ *  cdn：加速js css 图片等的请求速度
+ *  http2  可以同时请求n个资源，请求头部压缩，优先级更高
+ *  缓存：hash强缓存，html使用协商缓存
+ *  减少http请求和负载，压缩优化
+ *  更小的js，压缩tersorplugin，tree shaking es模块中只有用到的方法被打包，其他没有用到的方法被过滤
+ * 去除无用的代码，包括注释和console等
+ *  更小的图片：图片压缩，大小优化，100*100
+ *  preload prefetch：preload对当前的资源进行优先加载
+ *  不会影响onload事件 在浏览器渲染机制之前进行处理，支持多种类型，可以加载跨域资源
+ *  加载和执行过程分离，预加载，需要时自行调用
+ * prefetch：对于马上要进入的页面资源进行提前加载    兼容性不好
+ *   dns-prefetch
+ * async ：异步下载资源，下载完成之后立即执行，会阻塞html解析
+ * defer：html解析完成后，domcontentloaded触发之前执行，整个页面在内存中正常渲染结束（
+ * dom结构完全生成，其他脚本执行完成
+ * ），在window。onload之前执行
+ * defer脚本保证按照循序执行
+ * async：不保证按照顺序，哪个下载完执行哪个，执行会阻塞html解析
  * 
+ * 2:浏览器渲染方向
+ *  防抖节流 debounce throttle  防抖连续点击只生效一次   节流一段时间只生肖一次
+ *  react中useDebounce避免重新渲染
+ *  虚拟列表优化
+ *  懒加载图片
+ *  动画可以开启硬件加速，animation  transform： translate3d等
+ * 
+ * 
+ */
+/**
+ * 浏览器  js  闭包
  * 
  * 
  */
