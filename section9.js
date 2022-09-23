@@ -189,6 +189,27 @@ let obj = {
                 });
             }
         }
+        static all(promiseArray) {
+            if(!Array.isArray(promiseArray)) {
+                throw new Error('all的参数必须是数组')
+            }
+            return new Promise((resolve, reject) => {
+                let result = [];
+                let resolveNum = 0;
+                for(let i = 0; i < promiseArray.length; i++) {
+                    promiseArray[i].then((data) => {
+                        resolveNum ++;
+                        result[i] = data;
+                        if(resolveNum === promiseArray.length) {
+                            resolve(result);
+                        }
+                    }, (err) => {
+                        reject(err);
+                    })
+                }
+            });
+        }
+        static race() {}
     }
 
     let p1 = new myPromise((resolve, reject) => {
@@ -209,6 +230,15 @@ let obj = {
         console.log('third then data',data);
     }, (err) => {
         console.log('third then er', err);
+    });
+    myPromise.all([
+        Promise.reject(1), Promise.resolve(2), Promise.resolve(new Promise((resolve, reject) => {
+            resolve('resolved')
+        }))
+    ]).then((data) => {
+        console.log(data);
+    }, err => {
+        console.log(err);
     });
 
 }
