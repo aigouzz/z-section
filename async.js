@@ -56,6 +56,7 @@
  * Promise.reject(value)返回一个promsie对象，状态是rejected
  * 
  */
+import './deepclone.js'
 let p1 = Promise.resolve({
     then(resolve, reject) {
         resolve(1);
