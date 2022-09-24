@@ -242,3 +242,28 @@ let obj = {
     });
 
 }
+{
+    function myApply(...args) {
+        let obj = args[0];
+        let arr = args.slice(1);
+        obj.fn = this;
+        let result = obj.fn(...arr);
+        delete obj.fn;
+        return result;
+    }
+    function flatdeep(arr, depth = 1) {
+        let result = [];
+        let nowDep = 0;
+        while(arr.length) {
+            let lastItem = arr.pop();
+            nowDep ++;
+            if(Array.isArray(lastItem) && nowDep !== depth + 1) {
+                arr.push(...lastItem);
+            } else {
+                nowDep = 0;
+                result.push(lastItem);
+            }
+        }
+        return result.reverse();
+    }
+}
