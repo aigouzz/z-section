@@ -24,32 +24,19 @@
  * 参数按照值来传递：基本类型是按值传递，引用类型是传递对象的引用的副本
  *  引用类型传递如果内部修改了形参的值，修改成基本类型，不会改变引用，修改成引用类型，会改变
  *      外层传入的实参
+ */
+/**
+ * 类数组对象： {1: 'a', 2: 'b', 3: 'c', length: 3}
+ * 转数组：Array.prototype.push.call(arrlike, 'def');
+ * arguments document.getElementsByTagName('div') ...
+ * 函数体中arguments指代函数的Arguments对象
+ * 传入的参数，实参和arguments是共享的，没有传入的参数，实参和arguments不共享，改变其中之一
+ * 另外一个不变
+ * 在严格模式中，都不会共享
  * 
+ * 创建对象多种方式和优缺点
  * 
  * 
  * 
  */
 
-function myApply(...args) {
-    let obj = args[0];
-    let arr = args.slice(1);
-    obj.fn = this;
-    let result = obj.fn(...arr);
-    delete obj.fn;
-    return result;
-}
-function flatdeep(arr, depth = 1) {
-    let result = [];
-    let nowDep = 0;
-    while(arr.length) {
-        let lastItem = arr.pop();
-        nowDep ++;
-        if(Array.isArray(lastItem) && nowDep !== depth + 1) {
-            arr.push(...lastItem);
-        } else {
-            nowDep = 0;
-            result.push(lastItem);
-        }
-    }
-    return result.reverse();
-}

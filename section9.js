@@ -266,4 +266,27 @@ let obj = {
         }
         return result.reverse();
     }
+    function myNew(fn, ...args) {
+        if(typeof fn !== 'function') {
+            throw Error('第一个参数必须是一个function');
+        }
+        let obj = Object.create(fn.prototype);
+        // let obj = {};
+        // obj.__proto__ = fn.prototype;
+        let result = fn.apply(obj, args);
+        return typeof result === 'object' ? result : obj;
+    }
+
+}
+{
+    function change(name, age, sex) {
+        name = 'dd';
+        console.log(name, arguments[0]);
+        arguments[0] = 'kd';
+        console.log(name, arguments[0]);
+        sex = '11';
+        console.log(sex, arguments[2]);
+        arguments[2] = '22';
+        console.log(sex, arguments[2]);
+    }
 }
