@@ -36,7 +36,78 @@
  * 
  * 创建对象多种方式和优缺点
  * 
+ * 组合继承最适合
+ * 
+ */
+{
+    function Parent(name) {
+        this.name = name;
+    }
+    Parent.prototype.getname = function() {
+        return this.name;
+    }
+    function Child(name) {
+        Parent.call(this, name);
+    }
+    Child.prototype = new Parent();
+    Child.prototype.constructor = Child;
+    // Child.protype = Object.create(Parent.prototype);
+    // Child.prototype.constructor = Child;
+}
+/**
+ * http1.0:简单的数据链接协议，一个请求对应一个回应，回应完就关闭连接,一个请求对应一个tcp连接
+ * http:1.1 连接可以复用，connection kkepalive默认开启一个tcp连接可以传送多个http请求
+ *  增加了管道化技术，复用同一个tcp连接时，即使通过管道发送多个请求，服务端按照顺序依次响应
+ *  客户端未收到之前请求之前会阻塞后续请求，队头阻塞，同时最多支持6-8个请求
+ * 支持响应分块：
+ * 引入更多缓存控制机制，etag，ifnonematch，cache-control   
+ *  host头：主要用来实现虚拟主机技术
+ * http：2.0 二进制协议不是文本协议，
+ *  客户端和服务器通过帧来通信，最小单位，请求和响应通过一个个帧组成，
+ *  2.0将http1.1中消息分成帧并嵌入到流中，数据帧和报头帧分离，允许报头压缩，将多个流组合，可以多路复用
+ *      ，更有效的底层tcp连接，这个是复用协议，并行请求能在同一个连接中处理，移除了http1.x
+ *      中顺序和阻塞的约束，
+ *      压缩了header
+ *      服务端推送
+ * https:也是通过http协议进行传输信息，但是使用了tlc层进行了加密
+ *  tlc握手时使用非对称加密，
+ * 服务端将公钥发布出去，客户端获取到公钥，客户端创建一个秘钥， 使用公钥加密，发送给服务端，服务端通过私钥解密
+ *      得到这个密钥
+ * 200:强缓存失效，返回新的资源
+ * 200fromcache：强缓存都存在未过期，cache-control优先于expires，从本地获取成功
+ * 304not modified：协商缓存没有过期时服务器返回状态304
  * 
  * 
+ */
+/**
+ * 小程序
+ * 应用生命周期：
+ *  onLaunch onShow onHide onPageNotFound onThemeChange
+ * 页面生命周期 
+ *  onLoad onShow onHide onUnload
+ * 组件生命周期
+ *  created attached ready detached moved
+ * 打开小程序：(App)onLaunch --> (App)onShow --> (Pages)onLoad --> (Pages)onShow --> (pages)onRead
+
+进入下一个页面：(Pages)onHide --> (Next)onLoad --> (Next)onShow --> (Next)onReady
+
+返回上一个页面：(curr)onUnload --> (pre)onShow
+
+离开小程序：(App)onHide
+
+再次进入：小程序未销毁 --> (App)onShow(执行上面的顺序），小程序被销毁，（App)onLaunch重新开始执行.
+双线程：逻辑层，渲染层  nwjs  Chromewebview
+
+提高小程序应用速度：
+    加载：小程序包体积压缩，清理无用代码，图片可以直接使用cdn，分包
+    渲染：onload请求数据，减少不必要的请求，可以把结果缓存本地localstorage，骨架屏，
+    多次setdata合并成一次，如果页面有一些用不到的数据，不需要放在data中，
+
+    登陆：code ==》后段 code appid appsecret ==》微信
+            ssessionid openid ==》后段 自定义登陆态  =》前段存储在localstorage
+
+ */
+/**
+ * webpack
  */
 
