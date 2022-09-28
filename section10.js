@@ -108,6 +108,78 @@
 
  */
 /**
- * webpack
+ * webpack：静态模块打包工具
+ * 静态模块开发阶段可以被webpack直接引用的资源，已经打包成bundle。js
+ *  编译代码的能力，提高效率，解决浏览器兼容性
+ *  模块整合能力，提高性能，可维护性，解决浏览器频繁请求的问题
+ *  统一的模块化方案
+ * 
+ * 流程：读取合并参数，初始化配置的插件和执行环境需要的参数
+ *         从entry触发，针对每个module穿行调用每个loader，再找到该module依赖的module，
+ *      递归调用编译处理
+ *      编译后的module组合成chunk，然后把chunk生成文件，插入到页面汇总
+ * compile：开始编译
+ * make：从入口开始分析模块及其依赖的模块，创建模块文件
+ * buildmodule：构建模块
+ * seal：封装构建结果
+ * emit：把各个chunk输出到结果文件
+ * loader：对sass，css，png等不认识的文件调用loader进行匹配识别解析
+ * plugin：打包优化，资源管理，环境变量注入，运行在webpack不同生命周期阶段
+ * loader运行在打包文件之前，plugin全生命周期
+ * plugin：监听webpack抛出的事件，在合适的时机执行函数
+ * 
+ * hmr：
+ *  webpack compiler：源代码编译成bundlejs
+ *  hmr server：将热更新文件输出给hmr runtime
+ *  bundle server：提供编译之后的文件访问
+ *  hmr runtime：websocket服务器，注入到浏览器，更新文件的变化
+ *  启动，compiler会将源代码和runtime hmr一起编译成bundlejs，发送到浏览器解析
+ *  变化时候，webpack监听到变化，重新对文件打包编译，编译生成唯一hash值
+ *  socketserver监听到变化时候，生成两个文件manifest。json和update chunk。js
+ *  通过websocket连接，socketserver将这两个文件发送个客户端
+ *  浏览器拿到两个文件，通过hmr runtime解析加载这两个文件，针对修改的模块进行更新
+ * 
  */
+/**
+ * es6:
+ *  扩展运算符：实现浅拷贝
+ *      定义了iterator遍历接口的对象，都可以使用扩展运算符转成真正的数组  =array map set
+ * Array.from()
+ * Array.of()  无参数，返回看空数组，一个参数，返回这个参数个数的数组，多个才返回由这些参数组成数组
+ * copyWithin（）
+ * find()  findIndex() fill()  entries()  keys() values() includes() flat() flatMap()
+ * find findindex找出第一个符合的，find返回item findindex返回index
+ * fill(item, from, to) //用item填充数组，from替换，to不替换，浅拷贝
+ * flat参数默认1
+ * flatMap()  arr.flatMap((x) => [x, x*2])  [1,2,3] => [[1, 2,], [2, 4], [3, 6]] =>
+ *  [1,2,2,4,3,6]
+ * sort((a, b) => a-b)升序排列
+ * 
+ * css优化：
+ *  内联首屏关键css
+ *  异步加载css
+ *  css压缩
+ *  合理使用选择器
+ *  不要使用昂贵的属性  box-shadow border-radius nth-childs
+ *  不要使用@import  影响浏览器并行下载，加载时候有多余的负担，增加了页面渲染时间
+ *  小图片使用base64编码，减少重拍重绘，
+ *  css3动画尽量使用transform transition animation，少用left top
+ * 
+ * 
+ */
+// console.log([1, 2, {name:1}].find((item, index, arr) => {
+//     return item == 5;
+// }));  // undefined   findIndex => -1  引用地址肯定不等
+async function names() {
+    // return 1;
+    let a = await (new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(1);
+        }, 1000);
+    }))
+    console.log('nexr')
+}
+console.log(names().then(data => {
+    console.log(data);
+}))
 

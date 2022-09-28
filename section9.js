@@ -1,3 +1,5 @@
+
+
 /**
  * 手写
  */
@@ -289,4 +291,151 @@ let obj = {
         arguments[2] = '22';
         console.log(sex, arguments[2]);
     }
+}
+{
+    function nexttick(cb) {
+        let callbacks = [];
+        let timerFunc;
+        callbacks.push(() => {
+            cb();
+        });
+        if(typeof Promise != undefined) {
+            timerFunc = () => {
+                Promise.resolve().then(() => {
+                    flushCallbacks();
+                });
+            }
+        } else if(typeof MutationObserver !== undefined) {
+            let counter = 1;
+            let observer = new MutationObserver();
+            const textnode = document.createTextNode(String(counter));
+            observer.observe(textnode, {
+                characterData: true
+            });
+            timerFunc = () => {
+                counter = (counter + 1)%2;
+                textnode.data = String(counter);
+            }
+        } else if(typeof setImmediate != undefined) {
+            timerFunc = () => {
+                setImmediate(flushCallbacks)
+            }
+        } else {
+            timerFunc = () => {
+                setTimeout(flushCallbacks, 0);
+            }
+        }
+        function flushCallbacks() {
+            let copies = [...callbacks];
+            callbacks.length = 0;
+            copies.forEach(item => item());
+        }
+        timerFunc();
+    }
+    console.log('prev nexttick')
+    nexttick(() => {
+        console.log('nexttick called');
+    })
+    console.log('next nexttick')
+}
+{
+    class VueRouter {
+        constructor(Vue, options) {
+            this.$options = options;
+            this.routeMap = {};
+            this.app = new Vue({
+                data: {
+                    current: '#/'
+                }
+            });
+
+            this.init();
+            this.createRouteMap(this.$options);
+            this.initComponent(Vue);
+        }
+        init() {
+            window.addEventListener('load', this.onHashChange.bind(this), false);
+            window.addEventListener('hashchange', this.onHashChange.bind(this), false);
+        }
+        createRouteMap(options) {
+            options.routes.forEach(item => {
+                this.routeMap[item.path] = item.component;
+            })
+        }
+        initComponent(Vue) {
+            Vue.component('router-link', {
+                props: {
+                    to: String,
+                },
+                template: '<a :href="to"><slot></slot></a>'
+            });
+            let _this = this;
+            Vue.component('router-view', {
+                render(h) {
+                    let component = _this.routeMap[_this.app.current]
+                    return h(component)
+                }
+            })
+        }
+        getHash() {
+            return window.location.hash.slice(1) || '/'
+        }
+        onHashChange() {
+            this.app.current = this.getHash();
+        }
+    }
+}
+{
+    function selectSort(arr) {
+        let minIndex, temp;
+        for(let i = 0;i < arr.length;i ++) {
+            minIndex = i;
+            for(let j = i + 1;j < arr.length; j++) {
+                if(arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+        return arr;
+    }
+    function bubble(arr) {
+        for(let i = 0;i < arr.length;i ++) {
+            for(let j = 0;j < arr.length - 1 -i;j ++) {
+                if(arr[j+1] < arr[j]) {
+                    let temp = arr[j+1];
+                    arr[j+1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+    function insertSort(arr) {
+        let result = [];
+        for(let i = 0;i < arr.length;i ++) {
+            for(let j = 0;j < result.length;j ++) {
+                result[j]
+            }
+        }
+    }
+    console.log(bubble([3,2,1,4,22, 12, 11, 45, 21, 19]))
+}
+{
+    function longestSon(arr) {
+        let res = [];
+        for(let i = 0;i < arr.length;i ++) {
+            if(i == 0) {
+                res[0] = arr[0];
+            } else {
+                if(arr[i] > res[res.length - 1]) {
+                    res.push(arr[i]);
+                }
+            }
+        }
+        return res;
+    }
+    console.log(longestSon([3,2,1,4,22, 12, 11, 45, 21, 19]))
 }
