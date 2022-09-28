@@ -139,6 +139,13 @@
  *  通过websocket连接，socketserver将这两个文件发送个客户端
  *  浏览器拿到两个文件，通过hmr runtime解析加载这两个文件，针对修改的模块进行更新
  * 
+ * runtime:在模块交互时候，连接模块所需的加载和解析逻辑，包括浏览器中一加载完毕模块的
+ * 连接以及懒加载模块的执行逻辑
+ * manifest：当编译器开始执行，解析和映射应用程序时候，他会保留所有模块的详细要点，这个数据集合
+ *  保存的是模块之间的关系映射
+ * 完成打包发送到浏览器，runtime的时候通过manifest来解析和加载模块
+ * 
+ * 
  */
 /**
  * es6:
@@ -167,19 +174,34 @@
  * 
  * 
  */
-// console.log([1, 2, {name:1}].find((item, index, arr) => {
-//     return item == 5;
-// }));  // undefined   findIndex => -1  引用地址肯定不等
-async function names() {
-    // return 1;
-    let a = await (new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(1);
-        }, 1000);
-    }))
-    console.log('nexr')
-}
-console.log(names().then(data => {
-    console.log(data);
-}))
+/**
+ * cors:cross origin resource shanring跨来源资源共享
+ * 分成两种：
+ * 简单请求：
+ *  请求方法：head get post
+ *  head头信息不超出一下字段：
+ *      accept  accept-language  content-language last-event-id 
+ *      content-type：application/x-www-form-urlencoded
+ *                    multipart/form-data text/plain
+ * 复杂请求：包含通信内容请求还包括预先请求
+ *  access-control-allow-origin：请求允许的域名
+ *  access-control-allow-methods：请求允许的请求方法
+ *  access-control-allow-headers：对预请求中accss-control-request-headers的回应
+ *  access-control-allow-credentials（可选）：是否携带cookie
+ *  access-control-max-age（可选）：一秒为单位的缓存时间，预请求允许时应该尽量缓存
+ *  
+ * import和require的区别
+ * import
+ *  简单来说是闭包的运用
+ *  为了创建module的内部作用域，会调用一个包装函数
+ *  包装函数的返回值也就是module对外公开的api，也就是export出去的对象
+ *  import可以拿到module导出的变量的引用
+ * 
+ * require的区别
+ *  cjs输出一个值拷贝，es6模块输出的是值的引用
+ *  cjs模块是运行时加载，es6模块是编译时输出接口
+ * 
+ * 
+ */
+
 

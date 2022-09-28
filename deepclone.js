@@ -51,3 +51,16 @@ let obj1 = {
 let obj2 = deepclone(obj1);
 console.log(obj2);
 console.log(obj2 === obj1);
+
+
+function isObject(val) {
+    return (typeof val === 'obj' && obj !== null) || typeof val === 'function'
+}
+
+function deepclone(val) {
+    if(!isObject(val)) return val;
+}
+
+function cloneFunction(func) {
+    let bodyreg = /(?<=)/m
+}
