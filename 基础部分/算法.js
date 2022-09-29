@@ -11,15 +11,15 @@
         for(let i = 0;i< arr.length;i ++) {
             sum += arr[i];
             while(sum >= target) {
-                result = Math.min(result, i - left + 1);
                 if(result > i - left + 1) {
                     choseArr = arr.slice(left, i + 1);
                 }
+                result = Math.min(result, i - left + 1);
                 sum -= arr[left];
                 left ++;
             }
         }
         return result == arr.length + 1 ? 0 : {result,choseArr};
     }
-    console.log(shortSon([1, 2,2, 4, 3, 1, 2, 1], 7));
+    console.log(shortSon([1, 2,2, 4, 3, 1, 2, 1], 8));
 }

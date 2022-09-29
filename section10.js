@@ -203,5 +203,17 @@
  * 
  * 
  */
-
+/**
+ * for(let task of macrotasks) {
+ *      handleMacrotask(task);
+ *      for(let micro of microtasks) {
+ *          handleMicrotask(micro);
+ *      }
+ * }
+ * 宏任务：settimeout setinterval MessageChannel  PostMessage  setImmediate
+ * 微任务：Promise MutationObserver
+ * 
+ * 
+ * 
+ */
 
