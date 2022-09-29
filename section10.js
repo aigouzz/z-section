@@ -145,6 +145,47 @@
  *  保存的是模块之间的关系映射
  * 完成打包发送到浏览器，runtime的时候通过manifest来解析和加载模块
  * 
+ * webpack compiler：将js编译成bundle
+ * bundle server:提供文件在浏览器的访问，实际上就是一个服务器
+ * hmr server：将热更新的文件输出给hmr runtime
+ * hmr runtime：注入到bundle。js中，与hmr server通过websocket连接，接受文件变化，更新对应的文件
+ * bundle。js：构建输出的文件
+ * 原理：
+ * 启动阶段：webpack compiler将对应的文件打包成bundlejs（包含注入的hmr server），
+ *          发送给bundle server，浏览器就可以访问服务器的方式获取bundlejs
+ * 更新阶段：webpack compiler重新编译，发送给hmr server
+ *          hmr server可以知道有哪些资源，那些模块发生了变化，通知hmr runtime
+ *          hmr runtime更新代码
+ * 详解：webpack dev server启动本地服务，实现上使用了webpack express websocket
+ *      使用express启动本地服务，当浏览器反问资源时对此做响应
+ *      服务端和客户端使用websocket实现长连接
+ *      webpack监听源文件变化，就是当开发者保存文件时候触发webpack重新编译
+ *          每次编译生成hash值，以改动模块的json文件，已改动模块代码的js文件
+ *          编译完成通过socket向客户端推送当前编译的hash戳
+ *      客户端的websocket监听到有文件改动推送过来的hash戳，会和上一次对比
+ *          一致就走缓存
+ *          不一致就通过ajax和jsonp向服务端获取最新资源
+ *      使用内存文件系统去替换有修改的内容实现局部更新
+ * server端：
+ *      启动webpackdev server服务器
+ *      创建webpack 实例 ==》 创建server服务器==》添加webpack的done事件回调==》
+ *      编译完成向客户端发送消息==》创建express应用app==》设置文件系统为内存文件系统
+ *      ==》添加webpack dev middleware中间件==》中间件负责返回生成的文件==》启动webpack编译
+ *      ==》创建http服务器并启动服务==》使用sockjs在浏览器端和服务端之间建立一个websocket长连接
+ *      =》创建socket服务器
+ * client端
+ *      webpackdevserver/client端会监听到此hash消息
+ *      客户端收到ok的消息后哦会判断执行reloadApp方法进行更新
+ *      在reloadApp中进行判断，是否支持热更新，如果支持发射webpackhotupdate事件
+ *  如果不支持直接刷新流浪起 ==》在check方法中调用module。hot。check方法==》
+ *      hotModuleReplacement。runtime请求manifest==》它通过调用JsonpMainTemplate。runtime
+ * 的hotDownloadManifest方法==》调用JsonpMainTemplate。runtime的hotDownloadUpdateChunk方法
+ * 通过jsonp获取到最新的模块代码==》补丁js取回来之后会调用JsonpMainTemplate。runtime。js的webpackHotUpdate
+ * 方法==》然后会调用JsonpMainTemplate。runtime。js的hotAddUpdateChunk方法动态更新模块代码
+ * ==》然后调用hotApply方法进行热更新
+ * 
+ * 
+ * 
  * 
  */
 /**
@@ -200,7 +241,9 @@
  * require的区别
  *  cjs输出一个值拷贝，es6模块输出的是值的引用
  *  cjs模块是运行时加载，es6模块是编译时输出接口
- * 
+ * cjs是运行时加载对应模块，一旦输出一个值，即使模块内部对其发生改变，也不会影响输出值
+ * es6模块则不同，import导入是在js引擎对脚本静态分析时候确定，获取到的只是一个只读引用，
+ * 等脚本增长运行时候，会根据这个引用去对应模块中取值，所以引用对应值改变时候，其倒入的值也会变化
  * 
  */
 /**
@@ -215,5 +258,12 @@
  * 
  * 
  * 
+ * 
+ */
+/**
+ * 懒加载
+ * document.documentElement.clientHeight+ document.documentElement.scrollTop > ele.offsetTop
+ * getBoundingClientRect()获取元素大小位置
+ * IntersectionObserver自动观察元素是否在市口内
  */
 
