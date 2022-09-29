@@ -184,7 +184,42 @@
  * 方法==》然后会调用JsonpMainTemplate。runtime。js的hotAddUpdateChunk方法动态更新模块代码
  * ==》然后调用hotApply方法进行热更新
  * 
+ * webpack:本质上是一个事件流机制，核心模块：tapable（sync async）hooks构造出compiler（编译）
+ *      +compilation（创建bundles）
+ *      compiler对象代表了完整的webpack环境配置，在启动webpack时候被一次性建立，并配置好所有可操作的
+ *  设置，包括options loaders plugins ，当在webpack中应用一个插件时候，插件将收到此compiler对象的
+ *  引用，可以用compiler访问webpack的主环境
+ *      compilation对象代表了一次资源版本构建，在运行webpack开发环境中间件时，每当检测到一个文件变化，
+ *  就会创建一个新的compilation，从而生成一组新的编译资源，一个compilation对象表现来当前的模块资源，
+ *  编译生成资源，变化文件，以及被跟踪依赖的变化信息，它也提供了很多关键时机回调，以供插件做自定义处理时候选择使用
+ *      创建一个插件函数，在他prototype上定义一个apply方法，指定一个绑定到webpack的自身事件钩子上
+ *      函数内，处理webpack内部实例的特定数据
+ *      处理完成后调用webpack提供的回调
  * 
+ * webpack为什么慢呢？
+ * 他是所谓的模块捆绑器，内部有循环引用来分析模块之间的依赖，把文件解析成ast，通过一系列不同loader加工，
+ *  最后全部打包到一个js文件
+ *  webpack4之前在打包速度上没有过多优化，编译慢的过程都是花费在不同loader过程，webpack4以后，吸收借鉴了
+ * 很多优秀工具的思路
+ *      比如支持0配置，多线程等，速度大幅提神，依然有优化手段，合理代码拆分，公共代码提取，css资源的抽离
+ *      优化webpack构建速度
+ *          使用高版本webpack
+ *          多线程：thread-loader
+ *          缩小打包作用域：
+ *              exclude/include 确定loader规则范围
+ *              resolve。modules指明第三方模块的绝对路径，减少不必要的查找
+ *              resolve。extensions尽可能减少后戳尝试的可能性，
+ *              noparse对完全不需要解析的库进行忽略（不会解析但是仍会打包到bundle中，注意被忽略的文件里不应该包含import require define等模块语句）
+ *              ignorePlugin：完全排除模块
+ *              合理使用alias
+ *          充分利用缓存提升二次构建
+ *              babel-loader开启缓存
+ *              terser-webpack-plugin：开启缓存
+ *              使用cache-loader或hard-source-webpack-plugin
+ *                  注意：cache-loader和thread-loader一起使用的话，先cache-loader then thread-loader最后heavy-loader
+ *          dll
+ *              使用dllPlugin进行分包，使用dllReferencePlugin（索引连接）对manifest。json的
+ *              引用，让一些基本不会改动的代码先编译成静态资源，避免反复编译浪费时间
  * 
  * 
  */
@@ -267,3 +302,13 @@
  * IntersectionObserver自动观察元素是否在市口内
  */
 
+
+
+
+function MyExWebpackPlugin() {}
+MyExWebpackPlugin.prototype.apply = function(compiler) {
+    compiler.plugin('webpacksEventHook', function(compilation, callback) {
+        console.log('example plugin');
+        callback();
+    });
+}
