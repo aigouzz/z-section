@@ -80,7 +80,18 @@
  * 200:请求已经完成
  * 300:资源方面的问题
  * 400:客户端有问题
+ * 500:服务端的问题
  * 
+ * https：http的安全版本
+ * 采用对称加密和非对称加密结合的方式来保护浏览器和服务端之间通信的安全
+ *  对称加密算法加密数据+非对称算法加密交换密钥+数字证书验证身份 = 安全
+ * https是http报文将报文信息传输给ssl套接字进行加密，加密后将加密的套接字信息传送给tcp套接字
+ *  tcp套接字再将加密后的报文发送给目的主机，目的主机获取加密报文之后通过ssl套接字解密，然后噢交给
+ * 对应进程
+ * client1：TLS版本号+所支持加密套件列表+希望使用的TLS选项
+    Server1:选择一个客户端的加密套件+自己的公钥+自己的证书+希望使用的TLS选项+（要求客户端证书）；
+    Client2:(自己的证书)+使用服务器公钥和协商的加密套件加密一个对称秘钥（自己生成的一个随机值）；
+    Server2:使用私钥解密出对称秘钥（随机值）后，发送加密的Finish消息，表明完成握手
  * 
  */
 /**
@@ -313,8 +324,12 @@
  * getBoundingClientRect()获取元素大小位置
  * IntersectionObserver自动观察元素是否在市口内
  */
-let img = import('./基础部分/image/hmr.jpg');
-console.log(img)
+let img = import('./基础部分/image/hmr.webp');
+img.then((data) => {
+    console.log(data);
+}).catch(err => {
+    console.log(err)
+})
 
 
 
