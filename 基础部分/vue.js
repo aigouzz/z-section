@@ -1,5 +1,7 @@
-import { copyAugment } from "../../vueOptimise/src/v-src/core/observer/api";
-import { hasProto } from "../../vueOptimise/src/v-src/core/util";
+import { observe } from "../../vueOptimise/src/v-src/core/observer";
+import { arrKeys } from "../../vueOptimise/src/v-src/core/observer/array";
+
+const hasProto = __proto__ in {};
 
 {
     class Observer{
@@ -21,7 +23,9 @@ import { hasProto } from "../../vueOptimise/src/v-src/core/util";
             });
         }
         observeArray(value) {
-
+            for(let i = 0;i < value.length;i ++) {
+                observe(arr[i]);
+            }
         }
     }
     function defineReactive(obj, key, val) {

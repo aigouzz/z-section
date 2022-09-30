@@ -76,6 +76,10 @@
  * 200:强缓存失效，返回新的资源
  * 200fromcache：强缓存都存在未过期，cache-control优先于expires，从本地获取成功
  * 304not modified：协商缓存没有过期时服务器返回状态304
+ * 100:请求继续
+ * 200:请求已经完成
+ * 300:资源方面的问题
+ * 400:客户端有问题
  * 
  * 
  */
@@ -138,6 +142,7 @@
  *  socketserver监听到变化时候，生成两个文件manifest。json和update chunk。js
  *  通过websocket连接，socketserver将这两个文件发送个客户端
  *  浏览器拿到两个文件，通过hmr runtime解析加载这两个文件，针对修改的模块进行更新
+ * 
  * 
  * runtime:在模块交互时候，连接模块所需的加载和解析逻辑，包括浏览器中一加载完毕模块的
  * 连接以及懒加载模块的执行逻辑
@@ -220,6 +225,13 @@
  *          dll
  *              使用dllPlugin进行分包，使用dllReferencePlugin（索引连接）对manifest。json的
  *              引用，让一些基本不会改动的代码先编译成静态资源，避免反复编译浪费时间
+ *      webpack4带来的优化
+ *          v8带来的优化 for of代替foreach，map和set代替object，includes代替indexof
+ *          默认使用更快的md4 hash算法
+ *          webpack ast可以直接从loader传递给ast，减少解析时间
+ *          使用字符串代替里正则表达式
+ * 
+ * 
  * 
  * 
  */
@@ -301,7 +313,8 @@
  * getBoundingClientRect()获取元素大小位置
  * IntersectionObserver自动观察元素是否在市口内
  */
-
+let img = import('./基础部分/image/hmr.jpg');
+console.log(img)
 
 
 
