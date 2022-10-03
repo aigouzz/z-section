@@ -83,6 +83,11 @@
 
     }
     function patchVnode() {
+      if (j > prevEnd && j <= nextEnd) {
+        // ...
+      } else if (j > nextEnd && j <= prevEnd) {
+        // ...
+      } else {
         let prevStart = j,
         nextStart = j,
         nextLeft = nextEnd - nextStart + 1,
@@ -106,5 +111,6 @@
             source[nextIndex - nextStart] = i;
             patched ++;
         }
+      }
     }
  }
