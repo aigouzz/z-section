@@ -1,5 +1,7 @@
 import { observe } from "../../vueOptimise/src/v-src/core/observer";
+import { isObject } from "../../vueOptimise/src/v-src/core/observer/api";
 import { arrKeys } from "../../vueOptimise/src/v-src/core/observer/array";
+import { VNode } from "../../vueOptimise/src/v-src/core/observer/VNode";
 
 const hasProto = __proto__ in {};
 
@@ -27,6 +29,12 @@ const hasProto = __proto__ in {};
                 observe(arr[i]);
             }
         }
+    }
+    function observe(val) {
+        if(!isObject(val) || val instanceof VNode) {
+            return;
+        }
+        
     }
     function defineReactive(obj, key, val) {
         if(arguments.length == 2) {

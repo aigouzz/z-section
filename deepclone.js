@@ -62,5 +62,5 @@ function deepclone(val) {
 }
 
 function cloneFunction(func) {
-    let bodyreg = /(?<=)/m
+    let bodyreg = /(?<=)/m;
 }
