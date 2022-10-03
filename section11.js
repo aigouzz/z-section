@@ -84,15 +84,16 @@
     }
     function patchVnode() {
       if (j > prevEnd && j <= nextEnd) {
-        // ...
+        // ...插入到j对应的dom节点后面
       } else if (j > nextEnd && j <= prevEnd) {
-        // ...
+        // ...删除旧节点对应的dom节点
       } else {
         let prevStart = j,
         nextStart = j,
         nextLeft = nextEnd - nextStart + 1,
         source = new Array(nextLeft).fill(-1),
         nextIndexMap = {},
+        move = false,
         patched = 0;
         for(let i = nextStart;i < nextLeft;i ++) {
             let key = nextChildren[i].key;
@@ -110,6 +111,45 @@
             patch(prevNode, nextNode, parent);
             source[nextIndex - nextStart] = i;
             patched ++;
+
+            if(nextIndex < lastIndex) {
+              move = false; // 递增方法，判断是否需要移动
+            } else {
+              lastIndex = nextIndex;
+            }
+        }
+        if(move) {
+          //需要移动
+          const seq = lis(source); // source中递增元素位置
+          let j = seq.length - 1; //最长子序列的指针
+          for(let i = nextLeft - 1;i >= 0;i --) {
+            let pos = nextStart + i,
+            nextNode = nextChildren[pos],
+            nextPos = pos + 1,
+            refNode = nextPos >= nextChildren.length ? null : nextChildren[nextPos].el,
+            cur = source[i]; //当前source的值，用来判断是否移动
+            if(cur === -1) {
+              mount(nextNode, parent, refNode); //状况1，该节点是全新节点
+            } else if(cur === seq[j]) {
+              //状况2 是递增子序列，该节点不需要移动
+              j --;
+            } else {
+              //状况3 不是递增子序列，该节点需要移动
+              parent.insertBefore(nextNode.el, refNode);
+            }
+          }
+        } else {
+          // 不需要移动:只需要判断是否有全新的节点【在source中对应的值就是-1】，给他添加进去
+          for(let i = nextLeft - 1; i >= 0;i --) {
+            let cur = source[i];
+            if(cur === -1) {
+              let pos = nextStart + i,
+              nextNode = nextChildren[pos],
+              nextPos = pos +1,
+              refNode = nextPos >= nextChildren.length ? null : nextChildren[nextPos].el;
+              mount(nextNode, parent, refNode);
+            }
+          }
         }
       }
     }
