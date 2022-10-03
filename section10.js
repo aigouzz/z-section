@@ -106,7 +106,7 @@
         服务端用私钥解密，拿到对称加密的密钥
         传输加密后的信息，这部分信息就是服务端用私钥加密后的信息
         客户端解密信息，客户端用之前生产的私钥解密服务端传送过来的信息，于是获取了解密后的内容
-        
+
  * 
  */
 /**
@@ -339,11 +339,11 @@
  * getBoundingClientRect()获取元素大小位置
  * IntersectionObserver自动观察元素是否在市口内
  */
-let img = import('./基础部分/image/hmr.webp');
+let img = import('./基础部分/flat.js');
 img.then((data) => {
-    console.log(data);
+    console.log('flat:', data);
 }).catch(err => {
-    console.log(err)
+    console.log('flat error:', err);
 })
 
 

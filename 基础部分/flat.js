@@ -1,4 +1,4 @@
-{
+const flat = () => {
     // function flatDeep(arr) {
     //     return arr.flat(Infinity);
     // }
@@ -15,8 +15,9 @@
         return result.reverse();
     }
     console.log(flatDeep([1, 2, [3, 4, [5, 6, [7, 8, 9, ['a', 'b', ['c', ['d', 'e']]]]]]]))
+    return flatDeep;
 }
-{
+const _set = {
     /**
      * map set weakMap weakSet
      * set:成员唯一无序不重复，add delete has clear
@@ -25,4 +26,9 @@
      * weakMap：只接受对象作为键，（null除外），键名都是弱应用，
      * get set delete has
      */
+}
+
+export default {
+    flat,
+    _set
 }
