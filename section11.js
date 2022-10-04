@@ -154,3 +154,30 @@
       }
     }
  }
+ {
+    // async function fn1() {
+    //   console.log('async fn1');
+    //   return Promise.resolve(1).then((data) => {
+    //     console.log('async fn1 then', data);
+    //     return 'then end';
+    //   });
+    // }
+    function fn1() {
+      return new Promise((resolve,reject) => {
+        console.log('async fn1');
+        resolve();
+      }).then(() => {
+        return Promise.resolve(1).then((data) => {
+          console.log('async fn1 then', data);
+          return 'then end';
+        })
+      });
+    }
+    async function fn2() {
+      console.log('async fn2 start')
+      let fn = await fn1();
+      console.log(fn)
+      console.log('async fn2 end');
+    }
+    fn2();
+ }

@@ -122,7 +122,7 @@ const hasProto = __proto__ in {};
  *  开启gzip压缩
  *  使用ssr
  * 
- * 
+ * 数字点运算符优先级高于对象属性符
  */
 /**
  * vue挂载过程发生了啥？
