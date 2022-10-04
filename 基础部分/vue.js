@@ -100,3 +100,15 @@ const hasProto = __proto__ in {};
         })
     }
 }
+
+/**
+ * vue父组件监听子组件的生命周期
+ *  1:父：@mounted=‘domount’ 子：mounted(){this.$emit('mounted')}
+ *  2:父：@hook：mounted=‘domount’  @hook可以监听到created updated都可
+ * 
+ * 首屏加载
+ * performance.getEntriedByName('first-contentful-paint')[0].startTime
+ * document.addEventListener('domContentLoaded', (e) => {console.log('first')})
+ * 
+ * 
+ */
