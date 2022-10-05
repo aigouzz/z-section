@@ -144,5 +144,17 @@ const hasProto = __proto__ in {};
  * callHook(vm, 'created')  //调用created钩子函数
  * 
  * 
+ */
+/**
+ * vue既然可以通过数据劫持来精准知道数据在dom上变化，为何还需要vdom操作呢？
+ * 应用上变化不可能只是某一个点变化
+ * vdom操作可以提供一个性能操作的下限
+ * 带来更好的代码维护性
  * 
+ * keep-alive
+ * 组件name用处：keepalive搭配component is=name使用
+ *              dom做递归组件需要调用自身name   vue devtool调试工具显示组件名称
+ * include exclude 支持字符串和正则，exclude优先级更高
+ * max能缓存多少组件
+ * 对应两个钩子函数activated deactivated
  */
