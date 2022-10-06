@@ -344,7 +344,7 @@ let obj = {
             this.$options = options;
             this.routeMap = {};
             this.app = new Vue({
-                data: {
+                data() {
                     current: '#/'
                 }
             });

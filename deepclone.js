@@ -57,7 +57,7 @@ function isObject(val) {
     return (typeof val === 'obj' && obj !== null) || typeof val === 'function'
 }
 
-function deepclone(val) {
+function deepclone1(val) {
     if(!isObject(val)) return val;
 }
 

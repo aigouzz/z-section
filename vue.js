@@ -550,6 +550,7 @@
         Object.defineProperty(opts, 'passive', ({
           get: function get () {
             /* istanbul ignore next */
+            /*eslint-disable */
             supportsPassive = true;
           }
         })); // https://github.com/facebook/flow/issues/285

@@ -95,5 +95,5 @@ Object.is(-0, +0); // false
 Object.is(-0, 0); // false
 Object.is(0, +0); // true
 Object.is(0/0, NaN); // true
-NaN === NaN; // false
-+0 === -0; // true
+//NaN === NaN; // false
+//+0 === -0; // true

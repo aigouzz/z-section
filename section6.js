@@ -121,7 +121,8 @@ function create(obj) {
 function myInstanceof(left, right) {
     let leftp = Object.getPrototypeOf(left);
     let rightp = right.prototype;
-    while(true) {
+    const _Tr = true;
+    while(_Tr) {
         if(!leftp) return false;
         if(leftp === rightp) return true;
         leftp = Object.getPrototypeOf(leftp);
