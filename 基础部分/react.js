@@ -135,3 +135,22 @@ function useReducer(reducer, initialState){
     // 最后返回一个的状态值和派发action的方法
     return [lastState, dispatch];
 }
+/**
+ * redux实现原理
+ * 1:Provider
+ * Provider作用是从最外部封装了整个应用，并向connect模块传递store
+ * 2:connect
+ * 负责连接react 和redux
+ *  1）获取state
+ *  connect通过context获取Provider中store，通过store。getState（）获取整个store tree上的state
+ *  2）包装原组件
+ *  将state和action通过props的方式传入到原组件内部wrapWithConnect返回一个ReactComponent对象Connect，
+ * Connect重新render外部传入的原组件WrappedComponent，并把connect中传入的mapStateToProps，mapDispatchToProps
+ * 与组件上原有的props合并之后，通过属性方式传给wrappedComponent
+ *  3）监听store tree变化
+ *  connect缓存了store tree中state状态，通过当前state状态和变更前的state状态进行比较，从而
+ * 确定是否调用this。setState（）方法触发Connect及其子组件的重新渲染
+ * 
+ * 
+ */
+
