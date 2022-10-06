@@ -150,7 +150,21 @@ function useReducer(reducer, initialState){
  *  3）监听store tree变化
  *  connect缓存了store tree中state状态，通过当前state状态和变更前的state状态进行比较，从而
  * 确定是否调用this。setState（）方法触发Connect及其子组件的重新渲染
- * 
- * 
+ */
+/**
+ * setState是同步还是异步
+ * setState后发生了啥？
+ * 调用setState之后，react会将传入的参数对象和组件当前的状态属性合并，然后触发调和过程
+ * reconciliation
+ * 经过reconciliation，react会以相对高效方式根据新的状态构建react元素树并且着手渲染整个ui界面
+ * 在react的到元素树之后，react会计算出新的树和老树节点差异，然后根据差异对界面进行最小化重新渲染
+ * 在差异计算算法中，react能够相对精确的知道哪些位置发生了变化以及该如何变化，这就保证了按需更新，而不是
+ * 全部重新渲染
+ * setstate为什么默认是异步？
+ * 假如所有setState是同步，那就意味美执行一次setState时（有可能同时多次执行setState），都重新
+ *  vdom diff和dom修改，这对性能来说极其不友好，如果是异步，则可以把一个同步代码多个setState合并成
+ * 一次组件更新
+ * setState什么时候同步？
+ * 在setTimeout或者原生事件中，setState是同步的
  */
 
