@@ -318,6 +318,20 @@
  * es6模块则不同，import导入是在js引擎对脚本静态分析时候确定，获取到的只是一个只读引用，
  * 等脚本增长运行时候，会根据这个引用去对应模块中取值，所以引用对应值改变时候，其倒入的值也会变化
  * 
+ * es6模块调用cjs模块
+ *  可以直接使用cjs模块，cjs模块将不会被webpack的模块系统编译而是会原样输出，
+ *  并且cjs模块没有default属性
+ * es6模块调用es6模块
+ *  被调用的es6模块不会添加{_esmodule: true},只有调用者才会添加{__esmodule: true},并且可以进行tree-shaking
+ * 操作，如果被调用的es6模块只是import进来，但是并没有被用到，那么被调用的es6模块将会被标记为/**unused harmony default
+ * export * /,在压缩时此模块将会被删除
+ * cjs模块调用es6模块
+ *  es6模块编译后会添加{__esmodule:true},如果被调用的es6模块中恰好有export default属性，那么被编译后的
+ * es6模块将会添加default属性
+ * cjs模块调用cjs模块
+ *  cjs模块将会原样输出
+ * 
+ * 
  */
 /**
  * for(let task of macrotasks) {
