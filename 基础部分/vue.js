@@ -157,4 +157,14 @@ const hasProto = __proto__ in {};
  * include exclude 支持字符串和正则，exclude优先级更高
  * max能缓存多少组件
  * 对应两个钩子函数activated deactivated
+ * created 初始化两个对象分别缓存vnode和vnode的key
+ * destroyed 删除缓存vnode还要对应执行组件实例的destroyed
+ * 
+ */
+/**
+ * vue-router
+ * hash模式
+ *  window.addEventListener('hashchange', callback, false)
+ *      对浏览器地址进行监听，当调用push时候，把新路由添加到浏览器访问历史的栈顶，
+ * 使用replace时，把浏览器访问历史的栈顶路由替换成新路由
  */
