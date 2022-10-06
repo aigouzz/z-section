@@ -13,7 +13,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js,.vue ./"
+    "lint": "eslint --ext .js,.vue ./",
+    "precommit": "eslint --ext .js,.vue ./"
   },
   "husky": {
     "hooks": {
