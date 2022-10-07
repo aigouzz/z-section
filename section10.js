@@ -256,8 +256,55 @@
  *          默认使用更快的md4 hash算法
  *          webpack ast可以直接从loader传递给ast，减少解析时间
  *          使用字符串代替里正则表达式
- * 
- * 
+ * 具体使用
+ *  1:noParse
+ *      不去解析某个库内部依赖关系
+ *      比如jquery这个库时独立的，则不去解析这个库内部依赖的其他东西
+ *      在独立库的时候可以使用
+ *      module.exports = {
+ *          module: {
+ *              noParse: /jquery/,
+ *              rules: []
+ *          }
+ * }
+ *  2:ignorePlugin
+ *      忽略掉某些内容，不去解析依赖库内部引用的某些内容
+ *      从moment中引用。/local则忽略掉
+ *      如果要用local的话，则必须在项目中手动引入 import 'moment/locale/zh-cn'
+ *      module.exports = {
+ *          plugins: [
+ *              new Webpack.IgnorePlugin(/\.\/local/, /moment/)
+ * ]
+ * }
+ * 3:dllPlugin
+ *      不会多次打包，优化打包时间
+ *      先把依赖的不变的库打包
+ *      生成manifest.json文件
+ *      然后在webpack。config中引入
+ *      webpack.DllPlugin,webpack.DllReferencePlugin
+ * 4:thread-loader
+ *  他会将您的loader放在一个worker池子里面运行，以达到多线程构建
+ *  把这个loader放在其他loader之前，放在这个loader之后的loader就会在一个单独的worker池子中运行
+ *  module.exports= {
+ *      module: {
+ *          rules: [
+ *              {
+ *                  test: /\.js$/,
+ *                  include: path.resolve('src'),
+ *                  use: [
+ *                      'thread-loader',
+ *                      //你的高开销的loader放置在此 eg babel-loaders
+ *                  ]
+ *              }
+ *          ]
+ *      }
+ * }
+ * 每个worker都是一个单独的有600ms限制的nodejs进程，同时夸进程的数据交换也会被限制，
+ *  请在搞开销loader中使用，否则效果不佳
+ * 5:压缩加速-开启多线程压缩
+ * tersor-webpack-plugin({
+ *  parallel: true
+ * })
  * 
  * 
  */

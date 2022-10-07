@@ -127,13 +127,14 @@ const hasProto = __proto__ in {};
 /**
  * vue挂载过程发生了啥？
  * vuefunction执行中有this._init()
- * 然后执行initmixin（vue）   定义了_init方法
+ * 然后执行
+ * initmixin（vue）   定义了_init方法
  * stateMixin（Vue）  定义了$set,$get,$delete,$watch
  * eventsMixin（vue）  $on $off $once $emit definition
  * lifecycleMixin（vue）  _update $forceUpdate $destroy definition
  * renderMixin（vue）  定义_render 返回虚拟dom
  * 
- * initMixin(Vue);在vue圆形上定义了_init
+ * 执行initMixin(Vue);在vue原型上定义了_init
  * initLifecycle(vm) // 初始化生命周期标识位
  * initEvents(vm)  // 初始化组件事件侦听
  * initRender(vm)  // 初始化渲染方法
@@ -142,7 +143,17 @@ const hasProto = __proto__ in {};
  * initState(vm)  //初始化props data methods watch
  * initProvide(vm)  // 初始化provide
  * callHook(vm, 'created')  //调用created钩子函数
+ * 在调用beforeCreate之前，数据初始化没完成，data props这些属性无法访问到
+ * 到了created时，数据已经初始化完成，能够访问到data props属性等，这时候没有完成dom挂载，无法访问到
+ * dom元素
+ * 挂载方法调用vm.$mount（vm.$options.el）方法
  * 
+ * initState(vm) ==>完成数据初始化
+ *  initProps（vm，opts.props）
+ *  initMethods(vm, opts.methods)
+ *  initData(vm)
+ *  initComputed(vm, opts.computed)
+ *  initWatch(vm, opts.watch)
  * 
  */
 /**
@@ -194,4 +205,17 @@ const hasProto = __proto__ in {};
  * key是对每一个vnode的唯一id，也是diff的一种优化策略，根据他可以更快更准确找到对应的vnode
  * 
  * 
+ */
+/**
+ * vnode的理解
+ * 是一个js对象，通过对象方式表示dom结构，将页面状态抽象出对象形式，配合不同渲染工具
+ * 使得跨平台渲染成为可能  通过事务处理机制，将多次dom修改结果一次性添加到页面上，有效减少页面渲染次数
+ * 减少修改dom的重排重绘次数，提高渲染性能
+ * 为什么用？
+ * 保证性能下限，在不进行手动优化情况下，提供过得去的性能
+ * 跨平台   ssr渲染 uniapp转换成小程序
+ * 
+ * 真的比真实dom好？
+ * 首次渲染大量dom，多了一层vnode的计算过程，会比innerHTML插入慢
+ * 保证了下限，在真实dom操作时候进行针对性的优化，还是更快的
  */
