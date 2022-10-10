@@ -203,6 +203,18 @@ const hasProto = __proto__ in {};
 /**
  * 对key的理解
  * key是对每一个vnode的唯一id，也是diff的一种优化策略，根据他可以更快更准确找到对应的vnode
+ * v-for使用key
+ *  如果不用key，vue会采用就地服用原则，最小化element移动，尝试最大程度在同适当的
+ *  地方对相同类型element做patch或者reuse
+ *      如果使用了key，根据keys的顺序记录element，曾经拥有key的element如果不在出现，
+ *      会被直接remove或者destroyed
+ * 用+new Date()生成的时间戳作为key，手动强制触发重新渲染
+        当拥有新值的rerender作为key时，拥有了新key的Comp出现了，那么旧key Comp会被移除，新key Comp触发渲染
+ * 不设置key：相同类型节点，patch，数据相同，不发生dom操作
+            相同类型节点，patch，数据不同，dom操作
+            不同类型节点，去除旧节点，新增新节点
+            新节点多则插入，旧节点多则删除
+    设置key：双端对比
  * 
  * 
  */
