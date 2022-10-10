@@ -57,7 +57,7 @@
  * typescript：ts解析为typescript的ast
  * babel：转化成低版本，解析位@babel/parser的ast
  * terser：持久压缩混淆，解析为acorm的ast
- * 持久化缓存，可以使wenpack二次编译可以与unbundle的vite等相近的开发体验
+ * 持久化缓存，可以使webpack二次编译可以与unbundle的vite等相近的开发体验
  * 
  * 多进程：thread-loader  可对babel解析ast开启多线程处理，提升编译性能
  * test：/\.js/,
