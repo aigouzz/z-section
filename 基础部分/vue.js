@@ -135,6 +135,7 @@ const hasProto = __proto__ in {};
  * renderMixin（vue）  定义_render 返回虚拟dom
  * 
  * 执行initMixin(Vue);在vue原型上定义了_init
+ * _init()执行
  * initLifecycle(vm) // 初始化生命周期标识位
  * initEvents(vm)  // 初始化组件事件侦听
  * initRender(vm)  // 初始化渲染方法
@@ -214,7 +215,8 @@ const hasProto = __proto__ in {};
             相同类型节点，patch，数据不同，dom操作
             不同类型节点，去除旧节点，新增新节点
             新节点多则插入，旧节点多则删除
-    设置key：双端对比
+    设置key：双端对比 减少了dom操作，提高了diff效率
+    
  * 
  * 
  */
@@ -230,4 +232,18 @@ const hasProto = __proto__ in {};
  * 真的比真实dom好？
  * 首次渲染大量dom，多了一层vnode的计算过程，会比innerHTML插入慢
  * 保证了下限，在真实dom操作时候进行针对性的优化，还是更快的
+ */
+/**
+ * 生命周期
+ * beforeCreate 
+ * created
+ * beforeMount
+ * mounted
+ * beforeUpdate
+ * updated
+ * beforeDestroy
+ * destroyed
+ * activated
+ * deactivated
+ * errorCaptured
  */
