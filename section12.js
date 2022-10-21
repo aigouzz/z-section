@@ -50,14 +50,27 @@ class Axios{
    }
 }
 function findmax(str) {
-   let set = new Set(str.split(''));
+   let set = new Set();
    let str1 = '';
-   for(let i of set.values()) {
-      str1 += i;
+   let rk = -1;
+   let res = 0;
+   for(let i = 0;i < str.length;i ++) {
+      if(i != 0) {
+         set.delete(str.charAt(i - 1));
+      }
+      while(rk + 1 < str.length && !set.has(str.charAt(rk + 1))) {
+         set.add(str.charAt(rk + 1));
+         rk ++;
+      }
+      if(res < rk + 1 - i) {
+         str1 = str.substring(i, rk + 1);
+      }
+      res = Math.max(res, rk + 1 - i);
+      
    }
-   return str1;
+   return {res, str1};
 }
-console.log(findmax('aabbccdddddde'));
+// console.log(findmax('aabccdddddde'));
 {
    class Scheduler {
       constructor(maxCount=2) {
@@ -110,7 +123,7 @@ console.log(findmax('aabbccdddddde'));
     
     
     // 实现2
-    class Scheduler {  
+    class Scheduler1{  
       constructor (limit = 2) {    
         this.limit = limit    
         this.concurrent = 0    
@@ -145,5 +158,88 @@ console.log(findmax('aabbccdddddde'));
           p()    
         }  
       }
-   }
+    }
+    
+}
+{
+  // function isDate(value) {
+  //   return Object.prototype.toString.call(value).substring(8, -1) === 'Object'
+  // }
+  // function isObject(value) {
+  //   return Object.prototype.toString.call(value).substring(8, -1) === 'Object'
+  // }
+  // function deepclone(value, map = new WeakMap()) {
+  //   if(value == null || typeof value !== 'object') {
+  //     return value;
+  //   }
+  //   if(map.get(value)) {
+  //     return map.get(value);
+  //   }
+  //   let res = null;
+  //   if(Array.isArray(value)) {
+  //     res = [];
+  //     for(let i = 0;i < value.length;i ++) {
+  //       res[i] = deepclone(value[i]);
+  //     }
+  //   } else if(isObject(value)) {
+  //     for(let i in value) {
+  //       res[i] = deepclone(value[i]);
+  //     }
+  //   } else if(isDate(value)) {
+
+  //   }
+  // }
+}
+{
+  function fn1(v) {
+    console.log('fn1')
+    return v+1
+  }
+  
+  function fn2(v) {
+    console.log('fn2')
+    return v+2
+  }
+  
+  function fn3(v) {
+    console.log('fn3')
+    return v+3
+  }
+  
+  
+  //compose(fn3, fn2, fn1)(1) === 7
+  
+  function compose(...args) {
+    let arr = args.reverse();
+    function rent(v) {
+      let res = arr.reduce((prev, item) => {
+        let res = item(prev);
+        return res;
+      }, v);
+      return res;
+    }
+    return rent;
+  }
+  console.log(compose(fn3, fn2, fn1)(1))
+}
+{
+  //找出数组numbers的两个数相加等于target的index。
+const numbers = [2, 5, 7, 9, 11, 6, 3]
+const target = 12;
+function diffNumbers(num, trg){
+    //这里写逻辑
+    let arr = new Array();
+    for(let i = 0;i < numbers.length;i ++) {
+      let num = numbers.indexOf(trg - numbers[i]);
+      if(num !== -1 && !arr.flat(1).includes(i) && num !== i) {
+        arr.push([i, numbers.indexOf(trg - numbers[i])]);
+      }
+    }
+
+    return arr;
+}
+
+console.log(diffNumbers(numbers, target))
+//[[1, 2], [3, 6]]]
+
 }
