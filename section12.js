@@ -300,7 +300,7 @@ console.log(diffNumbers(numbers, target))
       if(i !== 0) {
         set.delete(str.charAt(i - 1));
       }
-      while(rk + 1 < i && !set.has(str.charAt(rk + 1))) {
+      while(rk + 1 < length && !set.has(str.charAt(rk + 1))) {
         set.add(str.charAt(rk + 1));
         rk ++;
       }
