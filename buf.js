@@ -59,7 +59,7 @@ let res = JSON.stringify({
       ["content-length-range", 0, 10 * 1024 * 1024],
     ],
 });
-let buf1 = Buffer.from(res);
+let buf1 = Buffer.from(`{"expiration":"2022-12-28T09:16:05.721Z","conditions":[["content-length-range",0,10485760]]}`);
 let buf2 = buf1.toString('base64');
 let buf3 = from(res);
 let buf4 = toBase64(toBinary(res));
