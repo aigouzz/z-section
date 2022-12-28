@@ -325,3 +325,21 @@ console.log(diffNumbers(numbers, target))
     return res;
   }
 }
+{
+  function fn1() {
+    let obj = {
+      name: 'ss',
+      age: '1'
+    };
+    return function (key) {
+      return obj.hasOwnProperty(key) ? obj[key] : undefined;
+    }
+  }
+  // console.log(fn1()('name'));
+  Object.defineProperty(Object.prototype, 'abc', {
+    get() {
+      return this;
+    }
+  });
+  // console.log(fn1()('abc'));
+}
