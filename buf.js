@@ -1,3 +1,5 @@
+const CryptoJS = require('./crypto/hmac');
+const Crypto = require('crypto-js');
 let date = new Date();
     // 设置policy过期时间。
 date.setHours(date.getHours() + 1);
@@ -95,36 +97,36 @@ function encode64(input) {
 }
 //将Base64编码字符串转换成Ansi编码的字符串
 function decode64(input) {
-var output = "";
-var chr1, chr2, chr3 = "";
-var enc1, enc2, enc3, enc4 = "";
-var i = 0;
-if (input.length % 4 != 0) {
-return "";
-}
-var base64test = /[^A-Za-z0-9\+\/\=]/g;
-if (base64test.exec(input)) {
-return "";
-}
-do {
-enc1 = keyStr.indexOf(input.charAt(i++));
-enc2 = keyStr.indexOf(input.charAt(i++));
-enc3 = keyStr.indexOf(input.charAt(i++));
-enc4 = keyStr.indexOf(input.charAt(i++));
-chr1 = (enc1 << 2) | (enc2 >> 4);
-chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-chr3 = ((enc3 & 3) << 6) | enc4;
-output = output + String.fromCharCode(chr1);
-if (enc3 != 64) {
-output += String.fromCharCode(chr2);
-}
-if (enc4 != 64) {
-output += String.fromCharCode(chr3);
-}
-chr1 = chr2 = chr3 = "";
-enc1 = enc2 = enc3 = enc4 = "";
-} while (i < input.length);
-return output;
+    var output = "";
+    var chr1, chr2, chr3 = "";
+    var enc1, enc2, enc3, enc4 = "";
+    var i = 0;
+    if (input.length % 4 != 0) {
+        return "";
+    }
+    var base64test = /[^A-Za-z0-9\+\/\=]/g;
+    if (base64test.exec(input)) {
+        return "";
+    }
+    do {
+        enc1 = keyStr.indexOf(input.charAt(i++));
+        enc2 = keyStr.indexOf(input.charAt(i++));
+        enc3 = keyStr.indexOf(input.charAt(i++));
+        enc4 = keyStr.indexOf(input.charAt(i++));
+        chr1 = (enc1 << 2) | (enc2 >> 4);
+        chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+        chr3 = ((enc3 & 3) << 6) | enc4;
+        output = output + String.fromCharCode(chr1);
+        if (enc3 != 64) {
+            output += String.fromCharCode(chr2);
+        }
+        if (enc4 != 64) {
+            output += String.fromCharCode(chr3);
+        }
+        chr1 = chr2 = chr3 = "";
+        enc1 = enc2 = enc3 = enc4 = "";
+    } while (i < input.length);
+    return output;
 }
 function utf16to8(str) {
  var out, i, len, c;
@@ -223,3 +225,6 @@ function byteLength (str) {
     }
     return n;
 }
+
+console.log(CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(buf4, '7wYyyNsRmXFghgjDoQemzGXcaZdejF')));
+console.log(Crypto.enc.Base64.stringify(Crypto.HmacSHA1(buf4, '7wYyyNsRmXFghgjDoQemzGXcaZdejF')));
