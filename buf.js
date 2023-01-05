@@ -227,5 +227,4 @@ function byteLength (str) {
 }
 
 console.log(CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(buf4, '7wYyyNsRmXFghgjDoQemzGXcaZdejF')));
-
 console.log(Crypto.enc.Base64.stringify(Crypto.HmacSHA1(buf4, '7wYyyNsRmXFghgjDoQemzGXcaZdejF')));
