@@ -1,0 +1,6 @@
+const crypto = require('crypto-js');
+
+let encrypted = 'z6wVGRcLoq35fcKvGcNnnHYEpGUyWNPw2vdpEJR0yHuh54DNd7DixVaL4oJUiwUMJJ4UckidTrLXgmiLODNE5HUcXkIwogTin4RPgKWIaguZMZ2yglSy5/Q8KuPSbQXW5Sq9XhLByK6fC2VpAXv6zAnHAi10ZDzsrBO4qm8e/1yDG6Pxf7NXachSsrdBuJYJzFVaadYw/LlmAlVgBakIJyCGS96GWrw3WqWMZsUZNxLz0H9X0+NDvEXQTfbc71Ab2eCOF7iQD508FVAajfD6qxmxu6NhCnuElFiPgOS9wPJRoOLOvMNYfZoEIuCos7J0bu4bsZ0B10BhqmBRsPh92MFokoZq6Iosa5PE3S5Nw+FSzRzshQPDGEgF5SuXnJ7+gU/0jnd18A8GrKd26Hci6gKaWo3mR6/isY8dnHzCK3IhUyGEw/0SAv7mNUC+vG+V';
+let iv = 'OmFTZnMfuKgWfeRKfuJmVQ==';
+let session = 'qXOuDNKB+0xtJhefkVkgpA==';
+
